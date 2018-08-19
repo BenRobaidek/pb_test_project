@@ -62,7 +62,7 @@ def train(data_path, train_path, val_path, test_path, bs):
         for batch_count,batch in enumerate(train_iter):
             #print('Batch:', batch_count)
             model.zero_grad()
-            inp = batch.text.t()
+            inp = batch.text
             preds = model(inp)
             loss = criterion(preds, batch.label)
             loss.backward()
@@ -83,7 +83,8 @@ def evaluate(data_iter, model, TEXT, LABEL):
         #loss = F.cross_entropy(preds, batch.label)
 
         _, preds = torch.max(preds, 1)
-        print(preds.data)
+        print('preds:', preds.data)
+        print('targets:', target.data)
         corrects += preds.data.eq(target.data).sum()
     return 100 * corrects / len(data_iter.dataset)
 
