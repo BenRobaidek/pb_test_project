@@ -79,13 +79,11 @@ def evaluate(data_iter, model, TEXT, LABEL):
         inp = batch.text
         preds = model(inp)
 
-        loss = F.cross_entropy(preds, batch.label)
+        #loss = F.cross_entropy(preds, batch.label)
 
-        avg_loss += loss.data[0]
-        _, preds = torch.max(logit, 1)
+        _, preds = torch.max(preds, 1)
         corrects += preds.data.eq(target.data).sum()
     return 100 * corrects / len(data_iter.dataset)
-
 
 def main():
     data_path = './data/'
