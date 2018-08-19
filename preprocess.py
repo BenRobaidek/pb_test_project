@@ -17,6 +17,9 @@ def main():
         row = row.replace(';', ' ; ')
         row = row.replace('$', ' $ ')
         row = row.replace('£', ' £ ')
+        row = row.replace('%', ' % ')
+        row = row.replace('(', ' ( ')
+        row = row.replace(')', ' ) ')
         row = row.split()
         for j, word in enumerate(row):
             row[j] = re.sub(r'([,.!?]+$)', r' \1 ',word)
@@ -31,9 +34,9 @@ def main():
     test = data[train_test_split['set'] == 'test']
 
     # write to file
-    train[[0,1]][:-1000].to_csv('./data/train.csv', sep='\t', header=False, index=False)
-    train[[0,1]][-1000:].to_csv('./data/val.csv', sep='\t', header=False, index=False)
-    test[[0,1]].to_csv('./data/test.csv', sep='\t', header=False, index=False)
+    train[[0,1]][:-1000].to_csv('./data/train.tsv', sep='\t', header=False, index=False)
+    train[[0,1]][-1000:].to_csv('./data/val.tsv', sep='\t', header=False, index=False)
+    test[[0,1]].to_csv('./data/test.tsv', sep='\t', header=False, index=False)
     print('.csv files saved')
 
     print(len(train) - 1000, ' examples in test')
