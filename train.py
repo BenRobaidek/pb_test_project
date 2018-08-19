@@ -79,7 +79,7 @@ def evaluate(data_iter, model, TEXT, LABEL):
         inp = batch.text
         preds = model(inp)
 
-        loss = F.cross_entropy(preds, target)
+        loss = F.cross_entropy(preds, batch.label)
 
         avg_loss += loss.data[0]
         _, preds = torch.max(logit, 1)
