@@ -85,8 +85,8 @@ def evaluate(data_iter, model, TEXT, LABEL):
         _, preds = torch.max(preds, 1)
         print('preds:', preds.data)
         print('targets:', target.data)
-        print('sum:', preds.data.eq(target.data))#.sum())
-        corrects += preds.data.eq(target.data).sum()
+        print('sum:', preds.data.eq(target.data).sum())
+        corrects += int(preds.data.eq(target.data).sum())
     return 100 * corrects / len(data_iter.dataset)
 
 def main():
