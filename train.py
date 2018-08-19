@@ -62,7 +62,7 @@ def train(data_path, train_path, val_path, test_path, bs):
         for batch_count,batch in enumerate(train_iter):
             #print('Batch:', batch_count)
             model.zero_grad()
-            inp = batch.text
+            inp = batch.text.t()
             preds = model(inp)
             loss = criterion(preds, batch.label)
             loss.backward()
