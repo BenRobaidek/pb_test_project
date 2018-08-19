@@ -83,6 +83,7 @@ def evaluate(data_iter, model, TEXT, LABEL):
         #loss = F.cross_entropy(preds, batch.label)
 
         _, preds = torch.max(preds, 1)
+        print(preds.data)
         corrects += preds.data.eq(target.data).sum()
     return 100 * corrects / len(data_iter.dataset)
 
