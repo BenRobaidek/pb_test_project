@@ -78,6 +78,7 @@ def evaluate(data_iter, model, TEXT, LABEL):
     for batch_count,batch in enumerate(data_iter):
         inp = batch.text
         preds = model(inp)
+        target = batch.label
 
         #loss = F.cross_entropy(preds, batch.label)
 
