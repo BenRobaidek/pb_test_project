@@ -4,13 +4,14 @@ from torch import autograd, nn
 from torchtext import data, datasets
 
 import numpy as np
+from rnn import RNN
 
-def train(data_path, train_path, val_path, test_path):
+def train(data_path, train_path, val_path, test_path, bs):
     print('Training...')
 
     # define fields
     TEXT = data.Field(lower=True,init_token="<start>",eos_token="<end>")
-    LABEL = data.Field(sequential=False)
+    LABEL = data.Field(sequential=False, unk_token=None)
 
     # build dataset splits
     train, val, test = data.TabularDataset.splits(
@@ -22,6 +23,52 @@ def train(data_path, train_path, val_path, test_path):
     TEXT.build_vocab(train)
     LABEL.build_vocab(train)
 
+    # build iterators
+    train_iter = data.BucketIterator(train, batch_size=bs, sort_key=lambda x: len(x.text), train=True)
+    val_iter = data.Iterator(val, batch_size=bs, repeat=False, train=False, sort=False, shuffle=False)
+    test_iter = data.Iterator(test, batch_size=len(test), repeat=False, train=False, sort=False, shuffle=False)
+
+    # print info
+    print(max(LABEL.vocab.freqs.values()))
+    print('num_classes: ',len(LABEL.vocab))
+    print('input_size: ', len(TEXT.vocab))
+
+    print('majority class acc:', max(LABEL.vocab.freqs.values()) / len(train))
+    print('random guess acc:',
+            (max(LABEL.vocab.freqs.values()) / len(train)) ** 2
+            + (min(LABEL.vocab.freqs.values()) / len(train)) ** 2)
+
+
+    input_dim = len(TEXT.vocab)
+    embedding_dim = 10
+    hidden_dim = 32
+    output_dim = 2
+
+    model = RNN(input_dim, embedding_dim, hidden_dim, output_dim)
+
+    epochs = 2
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adamax(model.parameters())
+    if int(torch.cuda.is_available()) == 1:
+        model = model.cuda()
+
+    # train
+    model.train()
+    for e in range(epochs):
+        print('Epoch:', e)
+        tot_loss = 0
+        train_iter.repeat=False
+        for batch_count,batch in enumerate(train_iter):
+            #print('Batch:', batch_count)
+            model.zero_grad()
+            inp = batch.text
+            preds = model(inp)
+            loss = criterion(preds, batch.label)
+            loss.backward()
+            optimizer.step()
+            tot_loss += loss.data[0]
+        print('Loss:,', tot_loss)
+
 
 def main():
     data_path = './data/'
@@ -29,7 +76,7 @@ def main():
     val_path = 'val.tsv'
     test_path = 'test.tsv'
     train(data_path=data_path, train_path=train_path, val_path=val_path,
-            test_path=test_path)
+            test_path=test_path, bs=8)
 
 if __name__ == '__main__':
     main()
