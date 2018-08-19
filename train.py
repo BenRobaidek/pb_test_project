@@ -41,13 +41,13 @@ def train(data_path, train_path, val_path, test_path, bs):
 
 
     input_dim = len(TEXT.vocab)
-    embedding_dim = 10
-    hidden_dim = 32
+    embedding_dim = 100
+    hidden_dim = 256
     output_dim = 2
 
     model = RNN(input_dim, embedding_dim, hidden_dim, output_dim)
 
-    epochs = 2
+    epochs = 20
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adamax(model.parameters())
     if int(torch.cuda.is_available()) == 1:
@@ -83,9 +83,9 @@ def evaluate(data_iter, model, TEXT, LABEL):
         #loss = F.cross_entropy(preds, batch.label)
 
         _, preds = torch.max(preds, 1)
-        print('preds:', preds.data)
-        print('targets:', target.data)
-        print('sum:', preds.data.eq(target.data).sum())
+        #print('preds:', preds.data)
+        #print('targets:', target.data)
+        #print('sum:', int(preds.data.eq(target.data).sum()))
         corrects += int(preds.data.eq(target.data).sum())
     return 100 * corrects / len(data_iter.dataset)
 
