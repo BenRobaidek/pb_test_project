@@ -1,5 +1,6 @@
 import torch
 from torch import autograd, nn
+import torch.nn.functional as F
 
 from torchtext import data, datasets
 
@@ -68,6 +69,22 @@ def train(data_path, train_path, val_path, test_path, bs):
             optimizer.step()
             tot_loss += loss.data[0]
         print('Loss:,', tot_loss)
+        val_acc = evaluate(val_iter, model, TEXT, LABEL)
+        print('Validation Acc:', val_acc)
+
+def evaluate(data_iter, model, TEXT, LABEL):
+    model.eval()
+    corrects = 0
+    for batch_count,batch in enumerate(data_iter):
+        inp = batch.text
+        preds = model(inp)
+
+        loss = F.cross_entropy(logit, target)
+
+        avg_loss += loss.data[0]
+        _, preds = torch.max(logit, 1)
+        corrects += preds.data.eq(target.data).sum()
+    return 100 * corrects / len(data_iter.dataset)
 
 
 def main():
