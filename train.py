@@ -68,7 +68,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
                     dropout=dropout,
                     net_type=net_type)
 
-    epochs = 20
+    epochs = 100
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(),lr=0.1, momentum=0.5)
     if int(torch.cuda.is_available()) == 1:
@@ -103,7 +103,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             for x in test_preds:
                 f.write(str(int(x)) + '\n')
             f.close()
-            torch.save(model.state_dict(), './models/e' + str(e) + str(val_acc) + '.pt')
+            torch.save(model.state_dict(), './models/e' + str(e) + '_' + str(val_acc) + '.pt')
 
 def evaluate(data_iter, model, TEXT, LABEL):
     model.eval()
