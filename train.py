@@ -63,8 +63,8 @@ def train(data_path, train_path, val_path, test_path, bs):
         train_iter.repeat=False
         for batch_count,batch in enumerate(train_iter):
             #print('Batch:', batch_count)
-            print(batch.text)
-            print(batch.label)
+            #print(batch.text)
+            #print(batch.label)
             model.zero_grad()
             inp = batch.text
             preds = model(inp)
