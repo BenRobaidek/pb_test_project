@@ -38,10 +38,11 @@ def main():
     val = train[[0,1]][-1000:]
 
     # random under-sampling
-
+    """
     for index, row in train.iterrows():
         if row[1] == 'None' and random.random() < .5:
             train = train.drop(index)
+    """
 
     # write to file
     train.to_csv('./data/train.tsv', sep='\t', header=False, index=False)

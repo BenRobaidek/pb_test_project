@@ -120,12 +120,12 @@ def main():
     test_path = 'test.tsv'
 
     # hyperparams
-    hidden_size = 128
+    hidden_size = 64
     num_classes = 2
-    num_layers = 2
+    num_layers = 1
     num_dir = 2
     batch_size = 8
-    emb_dim = 100
+    emb_dim = 50
     dropout = .5
     net_type = 'lstm'
     embfix=False
@@ -135,14 +135,14 @@ def main():
             val_path=val_path,
             test_path=test_path,
             hidden_size=hidden_size,
-            num_classes = 2,
-            num_layers = 2,
-            num_dir = 2,
-            batch_size = 8,
-            emb_dim = 100,
-            dropout = .5,
-            net_type = 'lstm',
-            embfix = False)
+            num_classes = num_classes,
+            num_layers = num_layers,
+            num_dir = num_dir,
+            batch_size = batch_size,
+            emb_dim = emb_dim,
+            dropout = dropout,
+            net_type = net_type,
+            embfix = embfix)
 
 if __name__ == '__main__':
     main()
