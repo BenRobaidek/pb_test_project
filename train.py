@@ -94,15 +94,19 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             optimizer.step()
             tot_loss += loss.data[0]
         print('Loss:,', tot_loss)
-        val_acc = evaluate(val_iter, model, TEXT, LABEL)
+        val_acc, _ = evaluate(val_iter, model, TEXT, LABEL)
         if val_acc > best_val_acc:
-            evaluate(test_iter, model, TEXT, LABEL)
+            test_acc, test_preds = evaluate(test_iter, model, TEXT, LABEL)
+            f = open('./preds.txt')
+            for x in test_preds:
+                f.write(x)
+            f.close()
         print('Validation Acc:', val_acc)
 
 def evaluate(data_iter, model, TEXT, LABEL):
     model.eval()
     corrects = 0
-    output = np.array([]) # preds for text file
+    all_preds = np.array([]) # preds for text file
     for batch_count,batch in enumerate(data_iter):
         inp = batch.text.t()
         preds = model(inp)
@@ -111,16 +115,16 @@ def evaluate(data_iter, model, TEXT, LABEL):
         #loss = F.cross_entropy(preds, batch.label)
 
         _, preds = torch.max(preds, 1)
-        print(preds.data)
-        output = np.append(output, preds.data)
+
+        all_preds = np.append(all_preds, preds.data)
         #print('preds:', preds.data)
         #print('targets:', target.data)
         #print('sum:', int(preds.data.eq(target.data).sum()))
         corrects += int(preds.data.eq(target.data).sum())
     val_acc = 100 * corrects / len(data_iter.dataset)
-    print(output)
+
     #val_preds =
-    return val_acc
+    return val_acc, all_preds
 
 def main():
     data_path = './data/'
