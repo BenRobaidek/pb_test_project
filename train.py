@@ -140,7 +140,7 @@ def main():
             batch_size = 8,
             emd_dim = 100,
             dropout = .5,
-            net_type = 'lstm'
+            net_type = 'lstm',
             embfix = False)
 
 if __name__ == '__main__':
