@@ -102,6 +102,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
 def evaluate(data_iter, model, TEXT, LABEL):
     model.eval()
     corrects = 0
+    output = [] # preds for text file
     for batch_count,batch in enumerate(data_iter):
         inp = batch.text.t()
         preds = model(inp)
@@ -110,13 +111,15 @@ def evaluate(data_iter, model, TEXT, LABEL):
         #loss = F.cross_entropy(preds, batch.label)
 
         _, preds = torch.max(preds, 1)
-        print(preds)
+        print(preds.data)
+        output = output.append(preds.data)
         #print('preds:', preds.data)
         #print('targets:', target.data)
         #print('sum:', int(preds.data.eq(target.data).sum()))
         corrects += int(preds.data.eq(target.data).sum())
     val_acc = 100 * corrects / len(data_iter.dataset)
-    #val_preds = 
+    print(output)
+    #val_preds =
     return val_acc
 
 def main():
