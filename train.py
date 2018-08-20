@@ -100,7 +100,7 @@ def evaluate(data_iter, model, TEXT, LABEL):
     model.eval()
     corrects = 0
     for batch_count,batch in enumerate(data_iter):
-        inp = batch.text
+        inp = batch.text.t()
         preds = model(inp)
         target = batch.label
 
