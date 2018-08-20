@@ -135,13 +135,13 @@ def main():
     test_path = 'test.tsv'
 
     # hyperparams
-    hidden_size = 64
+    hidden_size = 256
     num_classes = 2
-    num_layers = 1
+    num_layers = 2
     num_dir = 2
     batch_size = 8
-    emb_dim = 50
-    dropout = .5
+    emb_dim = 300
+    dropout = .2
     net_type = 'lstm'
     embfix=False
 
