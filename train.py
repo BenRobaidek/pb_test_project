@@ -25,7 +25,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
         fields=[('text', TEXT), ('label', LABEL)])
 
     # build vocabs
-    TEXT.build_vocab(train, vectors=GloVe(name='6B', dim=100), min_freq=2)
+    TEXT.build_vocab(train, vectors=GloVe(name='6B', dim=emb_dim), min_freq=2)
     prevecs=TEXT.vocab.vectors
     #TEXT.build_vocab(train, min_freq=3)
     LABEL.build_vocab(train)
