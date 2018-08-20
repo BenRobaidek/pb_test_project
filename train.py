@@ -8,7 +8,10 @@ from torchtext.vocab import GloVe
 import numpy as np
 from rnn import RNN
 
-def train(data_path, train_path, val_path, test_path, bs):
+def train(data_path, train_path, val_path, test_path, hidden_size,
+        num_classes, num_layers, num_dir, batch_size, emd_dim, dropout,
+        net_type, embfix):
+
     print('Training...')
 
     # define fields
@@ -27,8 +30,8 @@ def train(data_path, train_path, val_path, test_path, bs):
     LABEL.build_vocab(train)
 
     # build iterators
-    train_iter = data.BucketIterator(train, batch_size=bs, sort_key=lambda x: len(x.text), train=True)
-    val_iter = data.Iterator(val, batch_size=bs, repeat=False, train=False, sort=False, shuffle=False)
+    train_iter = data.BucketIterator(train, batch_size=batch_size, sort_key=lambda x: len(x.text), train=True)
+    val_iter = data.Iterator(val, batch_size=batch_size, repeat=False, train=False, sort=False, shuffle=False)
     test_iter = data.Iterator(test, batch_size=len(test), repeat=False, train=False, sort=False, shuffle=False)
 
     # print info
@@ -42,12 +45,27 @@ def train(data_path, train_path, val_path, test_path, bs):
             + (min(LABEL.vocab.freqs.values()) / len(train)) ** 2)
 
 
-    input_dim = len(TEXT.vocab)
-    embedding_dim = 100
-    hidden_dim = 256
-    output_dim = 2
+    #input_dim = len(TEXT.vocab)
+    #embedding_dim = 100
+    #hidden_dim = 256
+    #output_dim = 2
 
-    model = RNN(input_dim, embedding_dim, hidden_dim, output_dim)
+    #model = RNN(input_dim, embedding_dim, hidden_dim, output_dim)
+
+    num_classes = len(LABEL.vocab)
+    input_size = len(TEXT.vocab)
+
+    model = RNN(input_size=input_size,
+                    hidden_size=hs,
+                    num_classes=num_classes,
+                    prevecs=prevecs,
+                    num_layers=ly,
+                    num_dir=num_dir,
+                    batch_size=bs,
+                    emb_dim=emb_dim,
+                    embfix=embfix,
+                    dropout=dropout,
+                    net_type=net_type)
 
     epochs = 20
     criterion = nn.CrossEntropyLoss()
@@ -99,8 +117,31 @@ def main():
     train_path = 'train.tsv'
     val_path = 'val.tsv'
     test_path = 'test.tsv'
-    train(data_path=data_path, train_path=train_path, val_path=val_path,
-            test_path=test_path, bs=64)
+
+    # hyperparams
+    hidden_size = 128
+    num_classes = 2
+    num_layers = 2
+    num_dir = 2
+    batch_size = 8
+    emb_dim = 100
+    dropout = .5
+    net_type = 'lstm'
+    embfix=False
+
+    train(data_path=data_path,
+            train_path=train_path,
+            val_path=val_path,
+            test_path=test_path,
+            hidden_size=hidden_size,
+            num_classes = 2,
+            num_layers = 2,
+            num_dir = 2,
+            batch_size = 8,
+            emd_dim = 100,
+            dropout = .5,
+            net_type = 'lstm'
+            embfix = False)
 
 if __name__ == '__main__':
     main()
