@@ -51,7 +51,7 @@ def train(data_path, train_path, val_path, test_path, bs):
 
     epochs = 20
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adamax(model.parameters())
+    optimizer = torch.optim.SGD(model.parameters(),lr=0.1, momentum=0.5)
     if int(torch.cuda.is_available()) == 1:
         model = model.cuda()
 
@@ -99,7 +99,7 @@ def main():
     val_path = 'val.tsv'
     test_path = 'test.tsv'
     train(data_path=data_path, train_path=train_path, val_path=val_path,
-            test_path=test_path, bs=8)
+            test_path=test_path, bs=64)
 
 if __name__ == '__main__':
     main()
