@@ -99,7 +99,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             test_acc, test_preds = evaluate(test_iter, model, TEXT, LABEL)
             f = open('./preds.txt', 'w')
             for x in test_preds:
-                f.write(str(x))
+                f.write(str(int(x)) + '\n')
             f.close()
         print('Validation Acc:', val_acc)
 
