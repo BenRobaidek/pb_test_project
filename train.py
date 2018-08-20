@@ -68,7 +68,7 @@ def train(data_path, train_path, val_path, test_path, bs):
             model.zero_grad()
             inp = batch.text
             preds = model(inp)
-            print(preds, batch.label)
+            #print(preds, batch.label)
             loss = criterion(preds, batch.label)
             loss.backward()
             optimizer.step()
