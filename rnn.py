@@ -8,9 +8,9 @@ class RNN(nn.Module):
         self.emb = nn.Embedding(input_dim, embedding_dim)
         self.rnn = nn.RNN(embedding_dim, hidden_dim)
         self.fc = nn.Linear(hidden_dim, output_dim)
-        #self.softmax = nn.Softmax()
+        self.softmax = nn.Softmax()
 
     def forward(self, x):
         embedded = self.emb(x)
         output, hidden = self.rnn(embedded)
-        return self.fc(hidden.squeeze(0))
+        return self.softmax(self.fc(hidden.squeeze(0)))
