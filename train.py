@@ -26,6 +26,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
 
     # build vocabs
     TEXT.build_vocab(train, vectors=GloVe(name='6B', dim=100), min_freq=2)
+    prevecs=TEXT.vocab.vectors
     #TEXT.build_vocab(train, min_freq=3)
     LABEL.build_vocab(train)
 
@@ -56,12 +57,12 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
     input_size = len(TEXT.vocab)
 
     model = RNN(input_size=input_size,
-                    hidden_size=hs,
+                    hidden_size=hidden_size,
                     num_classes=num_classes,
                     prevecs=prevecs,
-                    num_layers=ly,
+                    num_layers=num_layers,
                     num_dir=num_dir,
-                    batch_size=bs,
+                    batch_size=batch_size,
                     emb_dim=emb_dim,
                     embfix=embfix,
                     dropout=dropout,
