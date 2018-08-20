@@ -21,7 +21,7 @@ def train(data_path, train_path, val_path, test_path, bs):
         fields=[('text', TEXT), ('label', LABEL)])
 
     # build vocabs
-    TEXT.build_vocab(train)
+    TEXT.build_vocab(train, min_freq=3)
     LABEL.build_vocab(train)
 
     # build iterators
