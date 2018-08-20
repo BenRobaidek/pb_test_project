@@ -102,7 +102,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
 def evaluate(data_iter, model, TEXT, LABEL):
     model.eval()
     corrects = 0
-    output = [] # preds for text file
+    output = np.array([]) # preds for text file
     for batch_count,batch in enumerate(data_iter):
         inp = batch.text.t()
         preds = model(inp)
