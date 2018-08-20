@@ -112,7 +112,7 @@ def evaluate(data_iter, model, TEXT, LABEL):
 
         _, preds = torch.max(preds, 1)
         print(preds.data)
-        output = output.append(preds.data)
+        output = np.append(output, preds.data)
         #print('preds:', preds.data)
         #print('targets:', target.data)
         #print('sum:', int(preds.data.eq(target.data).sum()))
