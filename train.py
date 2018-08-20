@@ -9,7 +9,7 @@ import numpy as np
 from rnn import RNN
 
 def train(data_path, train_path, val_path, test_path, hidden_size,
-        num_classes, num_layers, num_dir, batch_size, emd_dim, dropout,
+        num_classes, num_layers, num_dir, batch_size, emb_dim, dropout,
         net_type, embfix):
 
     print('Training...')
@@ -139,7 +139,7 @@ def main():
             num_layers = 2,
             num_dir = 2,
             batch_size = 8,
-            emd_dim = 100,
+            emb_dim = 100,
             dropout = .5,
             net_type = 'lstm',
             embfix = False)
