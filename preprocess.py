@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import re
+import random
 
 def main():
 
@@ -29,18 +30,27 @@ def main():
         data[0][i] = row
         #print(row)
 
-    # split train/test
+    # split train/val/test
     train = data[train_test_split['set'] == 'train']
     test = data[train_test_split['set'] == 'test']
 
+    train = train[[0,1]][:-1000]
+    val = train[[0,1]][-1000:]
+
+    # random under-sampling
+
+    for index, row in train.iterrows():
+        if row[1] == 'None' and random.random() < .5:
+            train = train.drop(index)
+
     # write to file
-    train[[0,1]][:-1000].to_csv('./data/train.tsv', sep='\t', header=False, index=False)
-    train[[0,1]][-1000:].to_csv('./data/val.tsv', sep='\t', header=False, index=False)
+    train.to_csv('./data/train.tsv', sep='\t', header=False, index=False)
+    val.to_csv('./data/val.tsv', sep='\t', header=False, index=False)
     test[[0,1]].to_csv('./data/test.tsv', sep='\t', header=False, index=False)
     print('.csv files saved')
 
-    print(len(train) - 1000, ' examples in test')
-    print('1000 examples in val')
+    print(len(train), ' examples in train')
+    print(len(val), ' examples in val')
     print(len(test), ' examples in test')
 
 if __name__ == '__main__':
