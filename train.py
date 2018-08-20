@@ -85,7 +85,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             #print(batch.text)
             #print(batch.label)
             model.zero_grad()
-            inp = batch.text
+            inp = batch.text.t()
             preds = model(inp)
             #print(preds, batch.label)
             loss = criterion(preds, batch.label)
