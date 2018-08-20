@@ -76,6 +76,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
 
     # train
     model.train()
+    best_val_acc = 0
     for e in range(epochs):
         print('Epoch:', e)
         tot_loss = 0
@@ -94,6 +95,8 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             tot_loss += loss.data[0]
         print('Loss:,', tot_loss)
         val_acc = evaluate(val_iter, model, TEXT, LABEL)
+        if val_acc > best_val_acc:
+            evaluate(test_iter, model, TEXT, LABEL)
         print('Validation Acc:', val_acc)
 
 def evaluate(data_iter, model, TEXT, LABEL):
@@ -107,11 +110,14 @@ def evaluate(data_iter, model, TEXT, LABEL):
         #loss = F.cross_entropy(preds, batch.label)
 
         _, preds = torch.max(preds, 1)
+        print(preds)
         #print('preds:', preds.data)
         #print('targets:', target.data)
         #print('sum:', int(preds.data.eq(target.data).sum()))
         corrects += int(preds.data.eq(target.data).sum())
-    return 100 * corrects / len(data_iter.dataset)
+    val_acc = 100 * corrects / len(data_iter.dataset)
+    #val_preds = 
+    return val_acc
 
 def main():
     data_path = './data/'
