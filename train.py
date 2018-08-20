@@ -95,13 +95,15 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             tot_loss += loss.data[0]
         print('Loss:,', tot_loss)
         val_acc, _ = evaluate(val_iter, model, TEXT, LABEL)
+        print('Validation Acc:', val_acc)
         if val_acc > best_val_acc:
             test_acc, test_preds = evaluate(test_iter, model, TEXT, LABEL)
+            print('Test acc:', test_acc)
             f = open('./preds.txt', 'w')
             for x in test_preds:
                 f.write(str(int(x)) + '\n')
             f.close()
-        print('Validation Acc:', val_acc)
+            torch.save(model.state_dict(), './models/e' + str(e) + str(val_acc) + '.pt')
 
 def evaluate(data_iter, model, TEXT, LABEL):
     model.eval()
