@@ -97,7 +97,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
         val_acc, _ = evaluate(val_iter, model, TEXT, LABEL)
         if val_acc > best_val_acc:
             test_acc, test_preds = evaluate(test_iter, model, TEXT, LABEL)
-            f = open('./preds.txt')
+            f = open('./preds.txt', 'w')
             for x in test_preds:
                 f.write(x)
             f.close()
