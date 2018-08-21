@@ -111,6 +111,7 @@ def evaluate(data_iter, model, TEXT, LABEL):
     all_preds = np.array([]) # preds for text file
 
     for batch_count,batch in enumerate(data_iter):
+        print(batch)
 
         inp = batch.text.t()
         preds = model(inp)

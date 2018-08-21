@@ -69,7 +69,9 @@ def main():
     print('type(model):', type(model))
     print('model:', model)
     print('TEST:')
-    evaluate(test_iter, model, TEXT, LABEL)
+
+    test_acc, test_preds = evaluate(test_iter, model, TEXT, LABEL)
+    print('test_acc:', test_acc)
 
 if __name__ == '__main__':
     main()
