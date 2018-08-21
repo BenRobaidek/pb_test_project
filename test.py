@@ -70,6 +70,9 @@ def main():
     print('model:', model)
     print('TEST:')
 
+
+    val_acc, val_preds = evaluate(val_iter, model, TEXT, LABEL)
+    print('val_acc:', val_acc)
     test_acc, test_preds = evaluate(test_iter, model, TEXT, LABEL)
     print('test_acc:', test_acc)
 
