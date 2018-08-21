@@ -62,7 +62,9 @@ def main():
                     emb_dim=emb_dim,
                     embfix=embfix,
                     dropout=dropout,
-                    net_type=net_type).load_state_dict(torch.load('./models/e16_100.0.pt'))
+                    net_type=net_type)
+
+    model.load_state_dict(torch.load('./models/e16_100.0.pt'))
 
     print('type(model):', type(model))
     print('model:', model)
