@@ -81,10 +81,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
         print('Epoch:', e)
         tot_loss = 0
         train_iter.repeat=False
-        print('batch:')
         for batch_count,batch in enumerate(train_iter):
-            if batch_count % 10 == 0:
-                print(batch_count, end=' ')
             #print('Batch:', batch_count)
             #print(batch.text)
             #print(batch.label)
