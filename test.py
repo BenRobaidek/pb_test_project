@@ -15,6 +15,12 @@ def main():
     TEXT = data.Field(lower=True,init_token="<start>",eos_token="<end>")
     LABEL = data.Field(sequential=False, unk_token=None)
 
+    #
+    data_path = './data/'
+    train_path = 'train.tsv'
+    val_path = 'val.tsv'
+    test_path = 'test.tsv'
+
     # build dataset splits
     train, val, test = data.TabularDataset.splits(
         path=data_path, train=train_path,
