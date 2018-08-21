@@ -80,6 +80,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
     for e in range(epochs):
         print('Epoch:', e)
         tot_loss = 0
+        corrects = 0
         train_iter.repeat=False
         for batch_count,batch in enumerate(train_iter):
             #print('Batch:', batch_count)
@@ -92,13 +93,17 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             loss = criterion(preds, batch.label)
             loss.backward()
             optimizer.step()
+            corrects += int(preds.data.eq(target.data).sum())
             tot_loss += loss.data[0]
-        print('Loss:,', tot_loss)
-        val_acc, _ = evaluate(val_iter, model, TEXT, LABEL)
-        print('Validation Acc:', val_acc)
+
+        print('acc (train):', 100 * corrects / len(train_iter.dataset))
+        print('loss (train):', tot_loss)
+        val_acc, _, val_loss = evaluate(val_iter, model, TEXT, LABEL)
+        print('acc (val):', val_acc)
+        print('loss (val):', val_loss)
         if val_acc > best_val_acc:
-            test_acc, test_preds = evaluate(test_iter, model, TEXT, LABEL)
-            print('Test acc:', test_acc)
+            test_acc, test_preds, test_loss = evaluate(test_iter, model, TEXT, LABEL)
+            #print('Test acc:', test_acc)
             f = open('./preds/preds_' + str(e) + '.txt', 'w')
             for x in test_preds:
                 f.write(str(int(x)) + '\n')
@@ -107,6 +112,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
 
 def evaluate(data_iter, model, TEXT, LABEL):
     model.eval()
+    tot_loss = 0
     corrects = 0
     all_preds = np.array([]) # preds for text file
 
@@ -116,7 +122,9 @@ def evaluate(data_iter, model, TEXT, LABEL):
         preds = model(inp)
         target = batch.label
 
-        #loss = F.cross_entropy(preds, batch.label)
+        loss = F.cross_entropy(preds, batch.label)
+        tot_loss += loss.data[0]
+
 
         _, preds = torch.max(preds, 1)
 
@@ -128,7 +136,7 @@ def evaluate(data_iter, model, TEXT, LABEL):
     val_acc = 100 * corrects / len(data_iter.dataset)
 
     #val_preds =
-    return val_acc, all_preds
+    return val_acc, all_preds, tot_loss
 
 def main():
     data_path = './data/'
@@ -137,12 +145,12 @@ def main():
     test_path = 'test.tsv'
 
     # hyperparams
-    hidden_size = 64
+    hidden_size = 8
     num_classes = 2
-    num_layers = 2
-    num_dir = 2
+    num_layers = 1
+    num_dir = 1
     batch_size = 8
-    emb_dim = 300
+    emb_dim = 50
     dropout = .2
     net_type = 'lstm'
     embfix=False

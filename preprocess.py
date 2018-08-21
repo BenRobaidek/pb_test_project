@@ -31,11 +31,14 @@ def main():
         #print(row)
 
     # split train/val/test
-    train = data[train_test_split['set'] == 'train']
-    test = data[train_test_split['set'] == 'test']
+    train_val = np.array(data[train_test_split['set'] == 'train'][[0,1]])
+    np.random.seed(0)
+    np.random.shuffle(train_val)
+    test = np.array(data[train_test_split['set'] == 'test'][[0,1]])
 
-    train = train[[0,1]][:-1000]
-    val = train[[0,1]][-1000:]
+    train = train_val[:-1000]
+    val = train_val[-1000:]
+    #test = np.array(test[[0,1]])
 
     # random under-sampling
     """
@@ -45,14 +48,20 @@ def main():
     """
 
     # write to file
-    train.to_csv('./data/train.tsv', sep='\t', header=False, index=False)
-    val.to_csv('./data/val.tsv', sep='\t', header=False, index=False)
-    test[[0,1]].to_csv('./data/test.tsv', sep='\t', header=False, index=False)
-    print('.csv files saved')
+    write2file(train, './data/train.tsv')
+    write2file(val, './data/val.tsv')
+    write2file(test, './data/test.tsv')
+    print('.tsv files saved')
 
     print(len(train), ' examples in train')
     print(len(val), ' examples in val')
     print(len(test), ' examples in test')
+
+def write2file(arr, file_path):
+    f = open(file_path, 'w')
+    for x in arr:
+        f.write(x[0].strip() + '\t' + x[1].strip() + '\n')
+    f.close()
 
 if __name__ == '__main__':
     main()

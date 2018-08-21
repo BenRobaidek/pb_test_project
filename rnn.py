@@ -62,7 +62,7 @@ class RNN(nn.Module):
     def forward(self, inp):
         hc = self.get_ch(inp.size(0))
         e = self.emb(inp)
-        #e = inp
+        
         if self.net_type == 'lstm':
             _, (y,_) = self.lstm(e, hc)
         elif self.net_type == 'gru':
@@ -72,6 +72,6 @@ class RNN(nn.Module):
         if self.num_layers>1:
             y = torch.cat([y[i].unsqueeze(0) for i in range(self.num_layers)],2)
         y = torch.squeeze(y,0)
-        #z = self.TanH(y)
+
         self.softmax = nn.Softmax(y)
         return self.Lin(y)
