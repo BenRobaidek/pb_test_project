@@ -62,7 +62,7 @@ def main():
                     emb_dim=emb_dim,
                     embfix=embfix,
                     dropout=dropout,
-                    net_type=net_type).load_state_dict(torch.load('mytraining.pt'))
+                    net_type=net_type).load_state_dict(torch.load('./models/e16_100.0.pt'))
 
 if __name__ == '__main__':
     main()
