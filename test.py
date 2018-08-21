@@ -50,7 +50,7 @@ def main():
     # build iterators
     train_iter = data.BucketIterator(train, batch_size=batch_size, sort_key=lambda x: len(x.text), train=True)
     val_iter = data.Iterator(val, batch_size=batch_size, repeat=False, train=False, sort=False, shuffle=False)
-    test_iter = data.Iterator(test, batch_size=len(test), repeat=False, train=False, sort=False, shuffle=False)
+    test_iter = data.Iterator(test, batch_size=batch_size, repeat=False, train=False, sort=False, shuffle=False) #batch_size = len(test)
 
     model = RNN(input_size=input_size,
                     hidden_size=hidden_size,
@@ -68,8 +68,6 @@ def main():
 
     print('type(model):', type(model))
     print('model:', model)
-    print('TEST:')
-
 
     val_acc, val_preds = evaluate(val_iter, model, TEXT, LABEL)
     print('val_acc:', val_acc)
