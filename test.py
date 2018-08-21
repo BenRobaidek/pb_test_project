@@ -44,6 +44,9 @@ def main():
     #TEXT.build_vocab(train, min_freq=3)
     LABEL.build_vocab(train)
 
+    num_classes = len(LABEL.vocab)
+    input_size = len(TEXT.vocab)
+
     # build iterators
     train_iter = data.BucketIterator(train, batch_size=batch_size, sort_key=lambda x: len(x.text), train=True)
     val_iter = data.Iterator(val, batch_size=batch_size, repeat=False, train=False, sort=False, shuffle=False)
