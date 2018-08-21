@@ -15,11 +15,22 @@ def main():
     TEXT = data.Field(lower=True,init_token="<start>",eos_token="<end>")
     LABEL = data.Field(sequential=False, unk_token=None)
 
-    #
+    # data paths
     data_path = './data/'
     train_path = 'train.tsv'
     val_path = 'val.tsv'
     test_path = 'test.tsv'
+
+    # hyperparams
+    hidden_size = 64
+    num_classes = 2
+    num_layers = 2
+    num_dir = 2
+    batch_size = 8
+    emb_dim = 300
+    dropout = .2
+    net_type = 'lstm'
+    embfix=False
 
     # build dataset splits
     train, val, test = data.TabularDataset.splits(
