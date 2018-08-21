@@ -96,6 +96,8 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             loss = criterion(preds, batch.label)
             loss.backward()
             optimizer.step()
+
+            _, preds = torch.max(preds, 1)
             corrects += int(preds.data.eq(target.data).sum())
             tot_loss += loss.data[0]
 
