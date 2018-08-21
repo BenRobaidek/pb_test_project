@@ -109,7 +109,10 @@ def evaluate(data_iter, model, TEXT, LABEL):
     model.eval()
     corrects = 0
     all_preds = np.array([]) # preds for text file
+    print('batch:', end='')
     for batch_count,batch in enumerate(data_iter):
+        if batch_count % 10 == 0:
+            print(batch_count, end=' ')
         inp = batch.text.t()
         preds = model(inp)
         target = batch.label
