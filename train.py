@@ -45,14 +45,6 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
             (max(LABEL.vocab.freqs.values()) / len(train)) ** 2
             + (min(LABEL.vocab.freqs.values()) / len(train)) ** 2)
 
-
-    #input_dim = len(TEXT.vocab)
-    #embedding_dim = 100
-    #hidden_dim = 256
-    #output_dim = 2
-
-    #model = RNN(input_dim, embedding_dim, hidden_dim, output_dim)
-
     num_classes = len(LABEL.vocab)
     input_size = len(TEXT.vocab)
 
