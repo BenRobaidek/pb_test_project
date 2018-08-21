@@ -49,7 +49,17 @@ def main():
     val_iter = data.Iterator(val, batch_size=batch_size, repeat=False, train=False, sort=False, shuffle=False)
     test_iter = data.Iterator(test, batch_size=len(test), repeat=False, train=False, sort=False, shuffle=False)
 
-    model = RNN().load_state_dict(torch.load('mytraining.pt'))
+    model = RNN(input_size=input_size,
+                    hidden_size=hidden_size,
+                    num_classes=num_classes,
+                    prevecs=prevecs,
+                    num_layers=num_layers,
+                    num_dir=num_dir,
+                    batch_size=batch_size,
+                    emb_dim=emb_dim,
+                    embfix=embfix,
+                    dropout=dropout,
+                    net_type=net_type).load_state_dict(torch.load('mytraining.pt'))
 
 if __name__ == '__main__':
     main()
