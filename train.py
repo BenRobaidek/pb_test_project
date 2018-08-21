@@ -139,10 +139,10 @@ def main():
     # hyperparams
     hidden_size = 64
     num_classes = 2
-    num_layers = 1
+    num_layers = 2
     num_dir = 2
     batch_size = 8
-    emb_dim = 50
+    emb_dim = 300
     dropout = .2
     net_type = 'lstm'
     embfix=False
