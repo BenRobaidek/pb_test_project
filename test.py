@@ -64,5 +64,8 @@ def main():
                     dropout=dropout,
                     net_type=net_type).load_state_dict(torch.load('./models/e16_100.0.pt'))
 
+    print('TEST:')
+    evaluate(test_iter, model, TEXT, LABEL)
+
 if __name__ == '__main__':
     main()
