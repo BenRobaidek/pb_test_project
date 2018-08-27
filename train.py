@@ -62,7 +62,8 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
 
     epochs = 100
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(),lr=0.1, momentum=0.5)
+    optimizer = torch.optim.Adamax(model.parameters())
+    #optimizer = torch.optim.SGD(model.parameters(),lr=0.1, momentum=0.5)
     if int(torch.cuda.is_available()) == 1:
         model = model.cuda()
 
@@ -143,13 +144,13 @@ def main():
     test_path = 'test.tsv'
 
     # hyperparams
-    hidden_size = 128
+    hidden_size = 64
     num_classes = 2
     num_layers = 2
     num_dir = 2
     batch_size = 8
     emb_dim = 300
-    dropout = .2
+    dropout = .8
     net_type = 'lstm'
     embfix=False
 
