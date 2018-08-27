@@ -133,6 +133,7 @@ def evaluate(data_iter, model, TEXT, LABEL):
     val_acc = 100 * corrects / len(data_iter.dataset)
 
     #val_preds =
+    model.train()
     return val_acc, all_preds, tot_loss
 
 def main():
