@@ -33,7 +33,7 @@ def train(data_path, train_path, val_path, test_path, hidden_size,
     # build iterators
     train_iter = data.BucketIterator(train, batch_size=batch_size, sort_key=lambda x: len(x.text), train=True)
     val_iter = data.Iterator(val, batch_size=batch_size, repeat=False, train=False, sort=False, shuffle=False)
-    test_iter = data.Iterator(test, batch_size=len(test), repeat=False, train=False, sort=False, shuffle=False)
+    test_iter = data.Iterator(test, batch_size=batch_size, repeat=False, train=False, sort=False, shuffle=False)
 
     # print info
     print(max(LABEL.vocab.freqs.values()))
